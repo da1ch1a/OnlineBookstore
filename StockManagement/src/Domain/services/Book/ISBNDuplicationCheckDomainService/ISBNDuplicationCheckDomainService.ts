@@ -1,5 +1,5 @@
 import { BookId } from 'Domain/models/Book/BookId/BookId';
-import { IBookRepository } from '../IBookRepository';
+import { IBookRepository } from '../../../models/Book/IBookRepository';
 
 export class ISBNDuplicationCheckDomainService {
   constructor(private bookRepository: IBookRepository) {}
