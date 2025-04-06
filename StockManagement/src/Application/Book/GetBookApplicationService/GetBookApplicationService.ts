@@ -1,9 +1,14 @@
 import { BookId } from 'Domain/models/Book/BookId/BookId';
 import { IBookRepository } from 'Domain/models/Book/IBookRepository';
 import { BookDTO } from '../BookDTO';
+import { inject, injectable } from 'tsyringe';
 
+@injectable()
 export class GetBookApplicationService {
-  constructor(private bookRepository: IBookRepository) {}
+  constructor(
+    @inject('IBookRepository')
+    private bookRepository: IBookRepository
+  ) {}
 
   async execute(isbn: string): Promise<BookDTO | null> {
     const book = await this.bookRepository.find(new BookId(isbn));
