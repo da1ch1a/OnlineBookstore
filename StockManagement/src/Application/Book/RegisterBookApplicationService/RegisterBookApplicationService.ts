@@ -1,4 +1,5 @@
 import { ITransactionManager } from 'Application/shared/ITransactionManager';
+import { IDomainEventPublisher } from 'Domain/shared/DomainEvent/IDomainEventPublisher';
 import { Book } from 'Domain/models/Book/Book';
 import { BookId } from 'Domain/models/Book/BookId/BookId';
 import { IBookRepository } from 'Domain/models/Book/IBookRepository';
@@ -19,7 +20,9 @@ export class RegisterBookApplicationService {
     @inject('IBookRepository')
     private bookRepository: IBookRepository,
     @inject('ITransactionManager')
-    private transactionManager: ITransactionManager
+    private transactionManager: ITransactionManager,
+    @inject('IDomainEventPublisher')
+    private domainEventPublisher: IDomainEventPublisher
   ) {}
 
   async execute(command: RegisterBookCommand): Promise<void> {
@@ -38,7 +41,7 @@ export class RegisterBookApplicationService {
         new Price({ amount: command.priceAmount, currency: 'JPY' })
       );
 
-      await this.bookRepository.save(book);
+      await this.bookRepository.save(book, this.domainEventPublisher);
     });
   }
 }

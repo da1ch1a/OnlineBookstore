@@ -4,6 +4,7 @@ import '../../Program';
 import { container } from 'tsyringe';
 import express from 'express';
 import { RegisterBookApplicationService, RegisterBookCommand } from 'Application/Book/RegisterBookApplicationService/RegisterBookApplicationService';
+import { BookLogSubscriber } from 'Application/shared/DomainEvent/subscribers/BookLogSubscriber';
 // import { PrismaTransactionManager } from 'Infrastructure/Prisma/PrismaTransactionManager';
 // import { PrismaClientManager } from 'Infrastructure/Prisma/PrismaClientManager';
 // import { PrismaBookRepository } from 'Infrastructure/Prisma/Book/PrismaBookRepository';
@@ -18,6 +19,9 @@ app.get('/', (_, res) => {
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
+
+// サブスクライバーを登録する
+container.resolve(BookLogSubscriber);
 
 app.use(express.json());
 app.post('/book', async (req, res) => {
